@@ -26,7 +26,7 @@ public:
         getline(cin, team);
         cout << "Enter working location: ";
         getline(cin, location);
-        cout << "Enter type of employee (e.g., Full-time, Part-time): ";
+        cout << "Enter type of employee (e.g.,Full-time, Part-time, Intern): ";
         getline(cin, type);
         cout << "Enter date of joining (DD/MM/YYYY): ";
         getline(cin, joiningDate);
@@ -68,7 +68,7 @@ public:
             getline(file, joiningDate) &&
             file >> salary)
         {
-            file.ignore(); // Skip newline after salary
+            file.ignore();
             return true;
         }
         return false;
@@ -118,7 +118,8 @@ void empdata()
 void show()
 {
     loadFromFile();
-    if (total != 0) {
+    if (total != 0)
+    {
         for (int i = 0; i < total; i++)
         {
             employees[i].display(i);
@@ -351,8 +352,8 @@ void mainMenu()
             case '7': return;
             case '8': exit(0);
             default:
-                cout << "Invalid input.\n";
-                Sleep(1000);
+            cout << "Invalid input.\n";
+            Sleep(1000);
         }
     }
 }
@@ -376,7 +377,7 @@ int main()
             case '2':
                 if (signin())
                 {
-                    loadFromFile(); // load once after login
+                    loadFromFile();
                     mainMenu();
                 }
                 break;
@@ -391,5 +392,6 @@ int main()
     }
     return 0;
 }
+
 
 
