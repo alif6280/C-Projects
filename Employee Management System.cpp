@@ -16,7 +16,7 @@ public:
     {
         cout << "Enter employee name: ";
         getline(cin, name);
-        cout << "Enter id: ";
+        cout << "Enter ID: ";
         getline(cin, id);
         cout << "Enter position: ";
         getline(cin, position);
@@ -37,30 +37,23 @@ public:
 
     void display(int index)
     {
-        cout << "Data of employee " << index + 1 << endl;
+        cout << "\nEmployee " << index + 1 << " Details:\n";
         cout << "Name: " << name << endl;
         cout << "ID: " << id << endl;
         cout << "Position: " << position << endl;
         cout << "Email: " << email << endl;
         cout << "Team: " << team << endl;
-        cout << "Working Location: " << location << endl;
-        cout << "Employee Type: " << type << endl;
-        cout << "Date of Joining: " << joiningDate << endl;
+        cout << "Location: " << location << endl;
+        cout << "Type: " << type << endl;
+        cout << "Joining Date: " << joiningDate << endl;
         cout << "Salary: " << salary << endl;
-        cout << "---------------------------" << endl;
+        cout << "--------------------------\n";
     }
 
     void writeToFile(ofstream& file)
     {
-        file << name << endl
-             << id << endl
-             << position << endl
-             << email << endl
-             << team << endl
-             << location << endl
-             << type << endl
-             << joiningDate << endl
-             << salary << endl;
+        file << name << endl<< id << endl<< position << endl<< email << endl<< team << endl<< location << endl<< type << endl
+             << joiningDate << endl<< salary << endl;
     }
 
     bool readFromFile(ifstream& file)
@@ -75,7 +68,7 @@ public:
             getline(file, joiningDate) &&
             file >> salary)
         {
-            file.ignore();
+            file.ignore(); // Skip newline after salary
             return true;
         }
         return false;
@@ -109,67 +102,75 @@ void loadFromFile()
 void empdata()
 {
     int user;
-    cout << "How many employees data do you want to enter??" << endl;
+    cout << "How many employees do you want to enter? ";
     cin >> user;
     cin.ignore();
 
     for (int i = total; i < total + user; i++)
     {
-        cout << "\nEnter data of employee " << i + 1 << endl << endl;
+        cout << "\nEnter data for employee " << i + 1 << ":\n";
         employees[i].input();
     }
-
     total += user;
     saveToFile();
 }
 
-void show() {
-    if (total != 0)
-    {
+void show()
+{
+    loadFromFile();
+    if (total != 0) {
         for (int i = 0; i < total; i++)
         {
             employees[i].display(i);
         }
-    } else
-    {
-        cout << "No data is entered" << endl;
     }
+    else
+    {
+        cout << "No employee data available.\n";
+    }
+    system("pause");
 }
 
 void search()
 {
+    loadFromFile();
     if (total != 0)
-        {
+    {
         string id;
-        cout << "Enter id of employee which you want to search" << endl;
+        cout << "Enter ID to search: ";
         cin >> id;
         cin.ignore();
 
         for (int i = 0; i < total; i++)
-        {
+            {
             if (employees[i].id == id)
             {
                 employees[i].display(i);
+                system("pause");
                 return;
             }
         }
-        cout << "No such record found" << endl;
-    } else {
-        cout << "No data is entered" << endl;
+        cout << "Employee not found.\n";
     }
+    else
+    {
+        cout << "No employee data available.\n";
+    }
+    system("pause");
 }
 
 void update()
 {
+    loadFromFile();
     if (total != 0)
-        {
+    {
         string id;
-        cout << "Enter id of employee which you want to update" << endl;
+        cout << "Enter ID to update: ";
         cin >> id;
         cin.ignore();
 
         for (int i = 0; i < total; i++)
-            {
+        {
             if (employees[i].id == id)
             {
                 cout << "\nOld data:\n";
@@ -178,21 +179,25 @@ void update()
                 cout << "\nEnter new data:\n";
                 employees[i].input();
                 saveToFile();
+                cout << "Employee updated.\n";
+                system("pause");
                 return;
             }
         }
-        cout << "No such record found" << endl;
+        cout << "Employee not found.\n";
     } else {
-        cout << "No data is entered" << endl;
+        cout << "No data available.\n";
     }
+    system("pause");
 }
 
 void updateSalary()
 {
+    loadFromFile();
     if (total != 0)
-        {
+    {
         string id;
-        cout << "Enter the ID of the employee whose salary you want to update: ";
+        cout << "Enter ID to update salary: ";
         cin >> id;
         cin.ignore();
 
@@ -200,114 +205,118 @@ void updateSalary()
         {
             if (employees[i].id == id)
             {
-                cout << "\nCurrent Salary of " << employees[i].name << ": " << employees[i].salary << endl;
+                cout << "Current Salary: " << employees[i].salary << endl;
                 cout << "Enter new salary: ";
                 cin >> employees[i].salary;
                 cin.ignore();
                 saveToFile();
-                cout << "Salary updated successfully.\n";
+                cout << "Salary updated.\n";
+                system("pause");
                 return;
             }
         }
-        cout << "No such record found.\n";
-    } else {
-        cout << "No data is entered.\n";
+        cout << "Employee not found.\n";
     }
+    else
+    {
+        cout << "No data available.\n";
+    }
+    system("pause");
 }
 
-void del() {
+void del()
+{
+    loadFromFile();
     if (total != 0)
-        {
-        int press;
-        cout << "Press 1 : Delete specific record" << endl;
-        cout << "Press 2 : Delete full record" << endl;
-        cin >> press;
+    {
+        int choice;
+        cout << "Press 1 : Delete specific record\n";
+        cout << "Press 2 : Delete all records\n";
+        cin >> choice;
         cin.ignore();
 
-        if (press == 1)
-            {
+        if (choice == 1)
+        {
             string id;
-            cout << "Enter id of employee which you want to delete" << endl;
+            cout << "Enter ID to delete: ";
             cin >> id;
             cin.ignore();
 
             for (int i = 0; i < total; i++)
-                {
+            {
                 if (employees[i].id == id)
-                {
+                    {
                     for (int j = i; j < total - 1; j++)
                     {
                         employees[j] = employees[j + 1];
                     }
                     total--;
-                    cout << "Record deleted successfully.\n";
                     saveToFile();
+                    cout << "Record deleted.\n";
+                    system("pause");
                     return;
                 }
             }
-            cout << "No such record found" << endl;
-        } else if (press == 2)
+            cout << "Employee not found.\n";
+        } else if (choice == 2)
         {
             total = 0;
-            cout << "All records are deleted" << endl;
             saveToFile();
-        } else
-        {
-            cout << "Invalid Input" << endl;
+            cout << "All records deleted.\n";
+        } else {
+            cout << "Invalid choice.\n";
         }
+    } else {
+        cout << "No data available.\n";
     }
-    else
-    {
-        cout << "No data is entered" << endl;
-    }
+    system("pause");
 }
 
 void signup()
 {
     string username, password;
-    cout << "\n\t--- SIGN UP ---" << endl;
-    cout << "\tEnter new username: ";
+    cout << "\n--- SIGN UP ---\n";
+    cout << "Enter new username: ";
     cin >> username;
-    cout << "\tEnter new password: ";
+    cout << "Enter new password: ";
     cin >> password;
 
-    ofstream outFile("users.txt", ios::app);
-    outFile << username << " " << password << endl;
-    outFile.close();
+    ofstream file("users.txt", ios::app);
+    file << username << " " << password << endl;
+    file.close();
 
-    cout << "\tCreating account, please wait";
+    cout << "Creating account";
     for (int i = 0; i < 6; i++)
     {
         cout << ".";
-        Sleep(500);
+        Sleep(300);
     }
-    cout << "\n\tAccount created successfully!" << endl;
-    Sleep(1500);
+    cout << "\nAccount created successfully!\n";
+    Sleep(1000);
 }
 
 bool signin()
 {
-    string username, password;
-    string fileUsername, filePassword;
-    cout << "\n\t--- SIGN IN ---" << endl;
-    cout << "\tEnter username: ";
+    string username, password, fileUsername, filePassword;
+    cout << "\n--- SIGN IN ---\n";
+    cout << "Enter username: ";
     cin >> username;
-    cout << "\tEnter password: ";
+    cout << "Enter password: ";
     cin >> password;
 
-    ifstream inFile("users.txt");
-    while (inFile >> fileUsername >> filePassword)
+    ifstream file("users.txt");
+    while (file >> fileUsername >> filePassword)
     {
         if (username == fileUsername && password == filePassword)
         {
-            cout << "\tLogin successful!" << endl;
+            cout << "Login successful!\n";
             Sleep(1000);
             return true;
         }
     }
 
-    cout << "\tInvalid login. Please try again." << endl;
-    Sleep(1500);
+    cout << "Invalid credentials.\n";
+    Sleep(1000);
     return false;
 }
 
@@ -315,18 +324,18 @@ void mainMenu()
 {
     char ch;
     while (true)
-        {
+    {
         system("CLS");
-        cout << "-------Employee Management System--------" << endl;
-        cout << "\nPress 1 : Add Employee" << endl;
-        cout << "Press 2 : Display all Employees" << endl;
-        cout << "Press 3 : Search Employee" << endl;
-        cout << "Press 4 : Update Employee" << endl;
-        cout << "Press 5 : Delete Employee" << endl;
-        cout << "Press 6 : Update Salary" << endl;
-        cout << "Press 7 : Logout" << endl;
-        cout << "Press 8 : Exit" << endl;
-
+        cout << "====== Employee Management System ======\n";
+        cout << "1. Add Employee\n";
+        cout << "2. Display All Employees\n";
+        cout << "3. Search Employee\n";
+        cout << "4. Update Employee\n";
+        cout << "5. Delete Employee\n";
+        cout << "6. Update Salary\n";
+        cout << "7. Logout\n";
+        cout << "8. Exit\n";
+        cout << "Enter your choice: ";
         cin >> ch;
         cin.ignore();
         system("CLS");
@@ -341,46 +350,46 @@ void mainMenu()
             case '6': updateSalary(); break;
             case '7': return;
             case '8': exit(0);
-            default: cout << "\aInvalid Input" << endl;
+            default:
+                cout << "Invalid input.\n";
+                Sleep(1000);
         }
     }
 }
 
 int main()
 {
-    loadFromFile();
     while (true)
-        {
+    {
         system("CLS");
-        cout << "_______ Employee Management System _______" << endl;
-        cout << "\tPress 1 : Sign Up" << endl;
-        cout << "\tPress 2 : Sign In" << endl;
-        cout << "\tPress 3 : Exit" << endl;
-        cout << "\tEnter your choice: ";
+        cout << "===== Welcome to Employee Management System =====\n";
+        cout << "1. Sign Up\n";
+        cout << "2. Sign In\n";
+        cout << "3. Exit\n";
+        cout << "Enter your choice: ";
         char choice;
         cin >> choice;
 
         switch (choice)
         {
-            case '1':
-                signup();
-                break;
+            case '1': signup(); break;
             case '2':
                 if (signin())
                 {
+                    loadFromFile(); // load once after login
                     mainMenu();
                 }
                 break;
             case '3':
-                cout << "\nExiting program...";
+                cout << "Exiting program...\n";
                 Sleep(1000);
                 return 0;
             default:
-                cout << "Invalid choice. Try again." << endl;
+                cout << "Invalid choice.\n";
                 Sleep(1000);
         }
     }
-
     return 0;
 }
+
 
