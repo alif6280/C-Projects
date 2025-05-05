@@ -299,7 +299,7 @@ void signup()
 bool signin()
 {
     string username, password, fileUsername, filePassword;
-    cout << "\n--- SIGN IN ---\n";
+    cout << "\n--- LOG IN ---\n";
     cout << "Enter username: ";
     cin >> username;
     cout << "Enter password: ";
@@ -365,7 +365,7 @@ int main()
         system("CLS");
         cout << "===== Welcome to Employee Management System =====\n";
         cout << "1. Sign Up\n";
-        cout << "2. Sign In\n";
+        cout << "2. Log In\n";
         cout << "3. Exit\n";
         cout << "Enter your choice: ";
         char choice;
@@ -392,6 +392,7 @@ int main()
     }
     return 0;
 }
+
 
 
 
