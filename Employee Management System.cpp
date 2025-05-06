@@ -80,7 +80,7 @@ int total = 0;
 
 void saveToFile()
 {
-    ofstream file("employees.txt");
+    ofstream file("employees.txt",ios::out|ios::app);
     for (int i = 0; i < total; i++)
     {
         employees[i].writeToFile(file);
@@ -90,7 +90,7 @@ void saveToFile()
 
 void loadFromFile()
 {
-    ifstream file("employees.txt");
+    ifstream file("employees.txt",ios::out|ios::app);
     total = 0;
     while (employees[total].readFromFile(file))
     {
@@ -392,6 +392,7 @@ int main()
     }
     return 0;
 }
+
 
 
 
